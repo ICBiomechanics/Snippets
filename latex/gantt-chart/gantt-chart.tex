@@ -1,0 +1,47 @@
+\documentclass[tikz]{standalone}
+\begin{document}
+\begin{tikzpicture}
+    \newcommand{\task}[4]{
+        \node[anchor=south east, text width=4cm, align=left] at (0.5, -#1-0.1) {#2}; 
+        \draw[draw=blue,fill=blue!20, rounded corners=2pt, line width = 0.6pt] (#3 + 1, -#1 + 0.2) rectangle ++(#4, 0.6); 
+    }
+
+    % Parameters
+    \def\startYear{2024}
+    \def\endYear{2027}
+    \def\lastTask{4}
+    \def\endGrid{17} % End of the time axis (4 years * 4 quarters + 1)
+
+    \fill[gray!10, draw=gray](1,0) rectangle (\endGrid, 0.5);
+    % Year labels with background
+    \foreach \year in {\startYear,...,\endYear} {
+        \fill[gray!10, draw=gray] ({(\year - \startYear)*4 + 1}, 1) rectangle ++(4, -0.5);
+        \node[anchor=north, align=center, text=black!80] at ({(\year - \startYear)*4 + 3.0}, 1.0) {\year}; 
+    }
+    % Time axis
+    \foreach \x in {1,...,\endGrid} {
+        \draw[line width = 0.3pt, draw=grey!20] (\x, 0) -- (\x, -\lastTask-1); % Vertical lines for each quarter
+    }
+
+    \foreach \y in {0, -1, ..., -\lastTask} {
+        \draw[line width = 0.3pt, draw=grey!20] (-3.3, \y) -- (\endGrid, \y); % Horizontal lines for tasks
+    }
+
+
+    % Quarter labels
+    \foreach \i/\quarter in {0/Q1, 1/Q2, 2/Q3, 3/Q4} {
+        \foreach \j in {0, 4, 8, 12} {
+            \fill[gray!20, draw=gray] (\i + \j + 1, 0.5) rectangle (\i + \j + 1, 0);
+            \node[anchor=north west] at (\i + \j + 1, 0.5) {\quarter}; 
+        }
+    }
+
+
+    % Tasks
+    \task{1}{Task 1}{1}{2.5}  % Task 1 starting at Q2 2024 and lasting 2.5 quarters
+    \task{2}{Task 2 with a long text}{3}{2.8}  % Task 2 starting at Q4 2024 and lasting 2.8 quarters
+    \task{3}{Task 3 with even longer text}{5.3}{5.7}  % Task 3 starting at Q2 2025 and lasting 5.7 quarters
+    \task{4}{Task 4}{6}{2} % Task 4 starting at Q3 2025 and lasting 2 quarters
+\end{tikzpicture}
+
+\end{document}
